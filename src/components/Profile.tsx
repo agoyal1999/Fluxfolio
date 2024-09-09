@@ -9,10 +9,6 @@ import { abi as ERC20_ABI } from "@/src/lib/abi"; // Import the ABI for ERC20 to
 import { SendTransaction } from "./Transaction";
 import Link from "next/link";
 
-// Define contract addresses for USDC and USDT
-export const USDC_ADDRESS = "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8";
-export const USDT_ADDRESS = "0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0";
-
 export default function Profile() {
   const { address, chain, isDisconnected } = useAccount();
   const { data: ethBalance } = useBalance({ address });
@@ -24,7 +20,7 @@ export default function Profile() {
   // Fetch USDC balance
   const usdcContractRead = useReadContract({
     abi: ERC20_ABI,
-    address: USDC_ADDRESS,
+    address: process.env.NEXT_PUBLIC_USDC_ADDRESS as `0x${string}`,
     functionName: "balanceOf",
     args: address ? [address as `0x${string}`] : undefined,
   });
@@ -32,7 +28,7 @@ export default function Profile() {
   // Fetch USDT balance
   const usdtContractRead = useReadContract({
     abi: ERC20_ABI,
-    address: USDT_ADDRESS,
+    address: process.env.NEXT_PUBLIC_USDT_ADDRESS as `0x${string}`,
     functionName: "balanceOf",
     args: address ? [address as `0x${string}`] : undefined,
   });

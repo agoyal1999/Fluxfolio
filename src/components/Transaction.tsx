@@ -6,8 +6,6 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "@/src/lib/utils";
 import { config } from "@/src/lib/config";
-
-import { USDC_ADDRESS, USDT_ADDRESS } from "./Profile";
 import { abi } from "../lib/abi";
 
 export function SendTransaction({ address }: { address: string }) {
@@ -17,11 +15,18 @@ export function SendTransaction({ address }: { address: string }) {
   const [transactionHash, setTransactionHash] = React.useState<string | null>(
     null
   );
-  const [selectedToken, setSelectedToken] =
-    React.useState<string>(USDC_ADDRESS); // Default token address
+  const [selectedToken, setSelectedToken] = React.useState<string>(
+    process.env.NEXT_PUBLIC_USDC_ADDRESS as `0x${string}`
+  ); // Default token address
   const [tokenOptions, setTokenOptions] = React.useState([
-    { address: USDC_ADDRESS, symbol: "USDC" },
-    { address: USDT_ADDRESS, symbol: "USDT" },
+    {
+      address: process.env.NEXT_PUBLIC_USDC_ADDRESS,
+      symbol: "USDC",
+    },
+    {
+      address: process.env.NEXT_PUBLIC_USDT_ADDRESS,
+      symbol: "USDT",
+    },
   ]);
 
   const { writeContractAsync } = useWriteContract();
