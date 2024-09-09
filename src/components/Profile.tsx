@@ -94,28 +94,35 @@ export default function Profile() {
 
   return (
     <React.Fragment>
-      <div className="mb-32 grid grid-cols-1 gap-6 lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-2">
-        {cardData.map((item, index) => (
-          <CardContainer key={index} className="inter-var">
-            <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white"
-              >
-                {item.title}
-              </CardItem>
-              <CardItem
-                as="p"
-                translateZ="60"
-                className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-              >
-                {item.content}
-              </CardItem>
-            </CardBody>
-          </CardContainer>
-        ))}
+      <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:max-w-5xl w-full">
+        {/* Cards Section */}
+        <div className="flex-1">
+          {cardData.map((item, index) => (
+            <CardContainer key={index} className="inter-var w-[100%]">
+              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] sm:w-[100%] h-auto rounded-xl p-6 border">
+                <CardItem
+                  translateZ="50"
+                  className="text-xl font-bold text-neutral-600 dark:text-white"
+                >
+                  {item.title}
+                </CardItem>
+                <CardItem
+                  as="p"
+                  translateZ="60"
+                  className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
+                >
+                  {item.content}
+                </CardItem>
+              </CardBody>
+            </CardContainer>
+          ))}
+        </div>
+
+        {/* Transaction Box */}
+        <div className="flex-1">
+          {address && <SendTransaction address={address as string} />}
+        </div>
       </div>
-      <div>{address && <SendTransaction address={address as string} />}</div>
     </React.Fragment>
   );
 }
