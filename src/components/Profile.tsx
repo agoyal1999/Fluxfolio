@@ -9,9 +9,13 @@ import { abi as ERC20_ABI } from "@/src/lib/abi"; // Import the ABI for ERC20 to
 import { SendTransaction } from "./Transaction";
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+import TokenInfoButton from "./TokenInfoButton";
+
 export default function Profile() {
   const { address, chain, isDisconnected } = useAccount();
   const { data: ethBalance } = useBalance({ address });
+  const router = useRouter();
 
   // State to hold balance data
   const [usdcBalance, setUsdcBalance] = useState<bigint | undefined>(undefined);
@@ -119,6 +123,13 @@ export default function Profile() {
           {address && <SendTransaction address={address as string} />}
         </div>
       </div>
+      {!isDisconnected && (
+        <div className="flex justify-start mt-6 lg:max-w-5xl w-full">
+          <TokenInfoButton onClick={() => router.push("/token-info")}>
+            View Token Information
+          </TokenInfoButton>
+        </div>
+      )}
     </React.Fragment>
   );
 }
