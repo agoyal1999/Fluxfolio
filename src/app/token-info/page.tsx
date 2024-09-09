@@ -1,8 +1,9 @@
 // pages/TokenInfo.tsx
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/src/components/ui/skeleton";
 
 const TOKENS = [
   {
@@ -20,8 +21,15 @@ const TOKENS = [
 ];
 
 export default function TokenInfo() {
-  const { address, isDisconnected } = useAccount();
+  const { isDisconnected } = useAccount();
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    // Simulate a loading period or data fetching
+    const timer = setTimeout(() => setLoading(false), 1000); // Adjust timing as needed
+    return () => clearTimeout(timer); // Clean up timer on unmount
+  }, []);
 
   const handleAddToken = async (token: {
     name: string;
@@ -53,8 +61,33 @@ export default function TokenInfo() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center space-x-4 justify-center min-h-screen">
+        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    );
+  }
+
   if (isDisconnected) {
-    return <p>Please connect your wallet to view token information.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h1 className="text-2xl font-bold mb-4">Wallet Disconnected</h1>
+        <p className="text-lg mb-6">
+          Please connect your wallet to view token information.
+        </p>
+        <button
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+          onClick={() => router.push("/")}
+        >
+          Go Back to Home
+        </button>
+      </div>
+    );
   }
 
   return (
